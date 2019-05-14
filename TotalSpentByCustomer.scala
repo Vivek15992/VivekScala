@@ -1,7 +1,6 @@
-package com.selva.spark
+package com.spark.learn
 
 import org.apache.spark._
-import org.apache.spark.SparkContext._
 import org.apache.log4j._
 
 /** Compute the total amount spent per customer in some fake e-commerce data. */
@@ -22,16 +21,18 @@ object TotalSpentByCustomer {
      // Create a SparkContext using every core of the local machine
     val sc = new SparkContext("local[*]", "TotalSpentByCustomer")   
     
-    val input = sc.textFile("../customer-orders.csv")
-
+    val input = sc.textFile("C:/Users/pc/workspace/customer-orders.csv")
+   println(input.partitions.length)
     val mappedInput = input.map(extractCustomerPricePairs)
     
     val totalByCustomer = mappedInput.reduceByKey( (x,y) => x + y )
-    
-    val results = totalByCustomer.collect()
+       println(totalByCustomer.partitions.length)
+
+    val results = totalByCustomer.sortByKey().collect
     
     // Print the results.
     results.foreach(println)
+    
   }
   
 }

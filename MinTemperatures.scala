@@ -17,6 +17,8 @@ object MinTemperatures {
   }
     /** Our main function where the action happens */
   def main(args: Array[String]) {
+    
+    val inputPath = args(0)
    
     // Set the log level to only print errors
     Logger.getLogger("org").setLevel(Level.ERROR)
@@ -25,7 +27,7 @@ object MinTemperatures {
     val sc = new SparkContext("local[*]", "MinTemperatures")
     
     // Read each line of input data
-    val lines = sc.textFile("../1800.csv")
+    val lines = sc.textFile(inputPath)
     
     // Convert to (stationID, entryType, temperature) tuples
     val parsedLines = lines.map(parseLine)

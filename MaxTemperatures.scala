@@ -27,7 +27,7 @@ object MaxTemperatures {
     val lines = sc.textFile("../1800.csv")
     val parsedLines = lines.map(parseLine)
     val maxTemps = parsedLines.filter(x => x._2 == "TMAX")
-    val stationTemps = maxTemps.map(x => (x._1, x._3.toFloat))
+    val stationTemps = maxTemps.map(x => (x._1, x._3))
     val maxTempsByStation = stationTemps.reduceByKey( (x,y) => max(x,y))
     val results = maxTempsByStation.collect()
     
