@@ -1,0 +1,71 @@
+Apache Spark:
+-------------
+
+Apache Spark has a well-defined and layered architecture where all the spark components
+and layers are loosely coupled and integrated with various extensions and libraries.
+Apache Spark Architecture is based on two main abstractions-
+
+Resilient Distributed Datasets (RDD)
+Directed Acyclic Graph (DAG)
+
+Resilient Distributed Datasets (RDD)
+-----------------------------------
+RDD stands for “Resilient Distributed Dataset”. It is the fundamental data structure of 
+Apache Spark. RDD in Apache Spark is an immutable collection of objects which 
+computes on the different node of the cluster.
+
+Decomposing the name RDD:
+
+Resilient,
+---------- i.e. fault-tolerant with the help of RDD lineage graph(DAG) and 
+so able to recompute missing or damaged partitions due to node failures.
+
+
+Distributed, since Data resides on multiple nodes.
+------------
+
+Dataset represents records of the data you work with. The user can load the data set 
+-------
+externally which can be either JSON file, CSV file, text file or database via JDBC 
+with no specific data structure. 
+
+Directed Acyclic Graph (DAG)
+----------------------------
+Direct - Transformation is an action which transitions data partition state from A to B.
+
+Acyclic -Transformation cannot return to the older partition
+
+DAG is a sequence of computations performed on data where each node is an RDD partition 
+and edge is a transformation on top of data.  The DAG abstraction helps eliminate the 
+Hadoop MapReduce multi stage execution model and provides performance enhancements over 
+Hadoop.
+
+Spark Architecture Overview
+----------------------------
+Apache Spark follows a master/slave architecture with two main daemons and a cluster 
+manager –
+
+Master Daemon – (Master/Driver Process)
+Worker Daemon –(Slave Process)
+A spark cluster has a single Master and any number of Slaves/Workers. The driver and the 
+executors run their individual Java processes and users can run them on the same 
+horizontal spark cluster or on separate machines i.e. in a vertical spark cluster or in 
+mixed machine configuration.
+
+Role of Driver in Spark Architecture
+--------------------------------------
+Spark Driver – Master Node of a Spark Application
+
+ 1.It is the central point and the entry point of the Spark Shell (Scala, Python, and R).
+ 
+ 2.The driver program runs the main () function of the application and is the place where 
+ the Spark Context is created. Spark Driver contains various components – DAGScheduler,
+ TaskScheduler, BackendScheduler and BlockManager responsible for the translation of 
+ spark user code into actual spark jobs executed on the cluster.
+
+3.The driver program that runs on the master node of the spark cluster schedules the job 
+execution and negotiates with the cluster manager.
+
+4.It translates the RDD’s into the execution graph and splits the graph into multiple stages.
+Driver stores the metadata about all the Resilient Distributed Databases and their 
+partitions.
