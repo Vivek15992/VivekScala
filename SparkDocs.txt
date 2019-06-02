@@ -16,7 +16,7 @@ computes on the different node of the cluster.
 
 Decomposing the name RDD:
 
-Resilient,
+Resilient, 
 ---------- i.e. fault-tolerant with the help of RDD lineage graph(DAG) and 
 so able to recompute missing or damaged partitions due to node failures.
 
