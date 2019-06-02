@@ -1,4 +1,4 @@
-Apache Spark:
+﻿Apache Spark:
 -------------
 
 Apache Spark has a well-defined and layered architecture where all the spark components
@@ -69,3 +69,191 @@ execution and negotiates with the cluster manager.
 4.It translates the RDD’s into the execution graph and splits the graph into multiple stages.
 Driver stores the metadata about all the Resilient Distributed Databases and their 
 partitions.
+
+
+Narrow Transformations 
+----------------------
+It is the result of map, filter and such that the data is from a single partition only,
+i.e. it is self-sufficient. An output RDD has partitions with records that originate
+from a single partition in the parent RDD. Only a limited subset of partitions used to 
+calculate the result.
+
+Spark groups narrow transformations as a stage known as pipelining.
+
+eg -> Map,FlatMap,Map Partition, Filter, Sample ,Union
+
+Wide Transformations
+---------------------------
+It is the result of groupByKey() and reduceByKey() like functions. The data required 
+to compute the records in a single partition may live in many partitions of the parent 
+RDD. Wide transformations are also known as shuffle transformations 
+because they may or may not depend on a shuffle.
+eg -> Intersection,Distinct,ReduceBykey,GroupBykey,join,cartesian,repartition, coalesce
+
+
+Actions
+-------------
+An Action in Spark returns final result of RDD computations. It triggers execution using
+ lineage graph to load the data into original RDD, carry out all intermediate 
+ transformations and return final results to Driver program or write it out to 
+ file system. Lineage graph is dependency graph of all parallel RDDs of RDD.
+
+Actions are RDD operations that produce non-RDD values. They materialize a value in a 
+Spark program. An Action is one of the ways to send result from executors to the driver. 
+First(), take(), reduce(), collect(), the count() is some of the Actions in spark.
+
+Using transformations, one can create RDD from the existing one. But when we want to 
+work with the actual dataset, at that point we use Action. When the Action occurs it
+does not create the new RDD, unlike transformation. Thus, actions are RDD operations 
+that give no RDD values. Action stores its value either to drivers or to the external
+storage system. It brings laziness of RDD into motion.
+
+
+RDD Features:
+----------------
+5.1. In-memory Computation
+
+Spark RDDs have a provision of in-memory computation. It stores intermediate results in 
+distributed memory(RAM) instead of stable storage(disk).
+
+5.2. Lazy Evaluations  
+
+All transformations in Apache Spark are lazy, in that they do not compute their results 
+right away. Instead, they just remember the transformations applied to some base data set.
+
+Spark computes transformations when an action requires a result for the driver program. 
+Follow this guide for the deep study of Spark Lazy Evaluation.
+
+5.3. Fault Tolerance
+
+Spark RDDs are fault tolerant as they track data lineage information to rebuild lost 
+data automatically on failure. They rebuild lost data on failure using lineage, each 
+RDD remembers how it was created from other datasets (by transformations like a map, 
+join or groupBy) to recreate itself. Follow this guide for the deep study of RDD Fault 
+Tolerance.
+
+5.4. Immutability
+
+Data is safe to share across processes. It can also be created or retrieved anytime 
+which makes caching, sharing & replication easy. Thus, it is a way to reach consistency
+ in computations.
+
+5.5. Partitioning
+
+Partitioning is the fundamental unit of parallelism in Spark RDD. Each partition is one 
+logical division of data which is mutable. One can create a partition through some 
+transformations on existing partitions.
+
+5.6. Persistence
+
+Users can state which RDDs they will reuse and choose a storage strategy for them 
+(e.g., in-memory storage or on Disk).
+
+5.7. Coarse-grained Operations
+
+It applies to all elements in datasets through maps or filter or group by operation.
+
+5.8. Location-Stickiness
+
+RDDs are capable of defining placement preference to compute partitions. Placement 
+preference refers to information about the location of RDD. The DAGScheduler places 
+the partitions in such a way that task is close to data as much as possible. Thus,
+ speed up computation.
+
+
+
+In-memory
+-----------------
+Introduction
+-------------
+This tutorial on Apache Spark in-memory computing will provide you the detailed 
+description of what is in memory computing? Introduction to Spark in-memory 
+processing and how does Apache Spark process data that does not fit into the memory? 
+This tutorial will also cover various storage levels in Spark and benefits of 
+in-memory computation.
+
+What is In-memory Computing?
+-----------------------------
+In in-memory computation, the data is kept in random access memory(RAM) instead of 
+some slow disk drives and is processed in parallel. Using this we can detect a 
+pattern, analyze large data. This has become popular because it reduces the cost 
+of memory. So, in-memory processing is economic for applications. The two main 
+columns of in-memory computation are-
+
+RAM storage
+Parallel distributed processing.
+
+Introduction to Spark In-memory Computing
+------------------------------------------
+Keeping the data in-memory improves the performance by an order of magnitudes. 
+The main abstraction of Spark is its RDDs. And the RDDs are cached using the cache() 
+or persist() method.Follow this link to learn Spark RDD persistence and caching mechanism.
+
+When we use cache() method, all the RDD are stored in-memory. When RDD stores 
+the value in memory, the data that does not fit in memory is either recalculated 
+or the excess data is sent to disk. Whenever we want RDD, it can be extracted without 
+going to disk. This reduces the space – time complexity and overhead of disk storage.
+
+The in-memory capability of Spark is good for machine learning and micro-batch processing. It provides faster execution for iterative jobs.
+
+When we use persist() method the RDDs can also be stored in-memory, 
+we can use it across parallel operations. The difference between cache() and persist() 
+is that using cache() the default storage level is MEMORY_ONLY while using persist()
+we can use various storage levels.
+
+The various storage level of persist() method in Apache Spark RDD are:
+
+MEMORY_ONLY
+MEMORY_AND_DISK
+MEMORY_ONLY_SER
+MEMORY_AND_DISK_SER
+DISK_ONLY
+MEMORY_ONLY_2 and MEMORY_AND_DISK_2
+
+
+MEMORY_ONLY
+-----------
+In this storage level Spark, RDD is stored as deserialized JAVA object in JVM. If RDD
+ does not fit in memory, then the remaining 
+will be recomputed each time they are needed.
+
+
+ MEMORY_AND_DISK
+ -------------------
+In this level, RDD is stored as deserialized JAVA object in JVM. If the full RDD 
+does not fit in memory then the remaining partition is stored on disk, 
+instead of recomputing it every time when it is needed.
+
+
+MEMORY_ONLY_SER
+----------------
+This level stores RDDs as serialized JAVA object. It stores one-byte 
+array per partition. It is like MEMORY_ONLY but is more space
+ efficient especially when we use fast serializer.
+ 
+ MEMORY_AND_DISK_SER
+ ---------------------
+This level stores RDD as serialized JAVA object. If the full RDD does not
+ fit in the memory then it stores the remaining partition on the disk, 
+instead of recomputing it every time when we need.
+
+DISK_ONLY
+-----------
+This storage level stores the RDD partitions only on disk.
+
+MEMORY_ONLY_2 and MEMORY_AND_DISK_2
+------------------------------------
+It is like MEMORY_ONLY and MEMORY_AND_DISK. The only difference is that each partition gets
+ replicate on two nodes in the cluster.
+ 
+ Advantages of In-memory Processing
+ ------------------------------------
+After studying Spark in-memory computing introduction and various storage levels in detail, let’s discuss the advantages of in-memory computation-
+
+When we need a data to analyze it is already available on the go or we can retrieve it easily.
+It is good for real-time risk management and fraud detection.
+The data becomes highly accessible.
+The computation speed of the system increases.
+Improves complex event processing.
+Cached a large amount of data.
+It is economic, as the cost of RAM has fallen over a period of time.
