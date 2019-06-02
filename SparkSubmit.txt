@@ -1,0 +1,3 @@
+
+
+spark-submit --num-executors 2 --executor-memory 2gb --master local[*] --class net.martinprobson.spark.spark_example.DataFrames C:\Users\pc\Desktop\Spark-Scala-Maven-Example-master\target\spark_example-1.0-SNAPSHOT.jar
