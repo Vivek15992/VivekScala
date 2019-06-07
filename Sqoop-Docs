@@ -1,0 +1,290 @@
+hadoop dfsadmin -safemode leave
+hadoop namenode -format
+
+mysql Login
+-----------
+mysql -u root -p
+root
+
+
+Person Table
+------------
+create table person ( id int NOT NULL, Name varchar(235), age int,
+ PRIMARY KEY(id));
+insert into person values(1,"selva",30);
+insert into person values(2,"rajesh",24);
+insert into person values(3,"sandip",29);
+insert into person values(4,"Naga",31);
+insert into person values(5,"kumar",34);
+insert into person values(6,"hari",40);
+insert into person values(7,"nagesh",27);
+insert into person values(8,"mahipal",29);
+insert into person values(9,null,null);
+
+
+dept Table
+----------
+create table dept(deptid int NOT NULL, deptname varchar(235),
+ PRIMARY KEY(deptid));
+
+
+insert into dept values(1,"IT");
+insert into dept values(2,"HR");
+insert into dept values(3,"CSE");
+insert into dept values(4,"MECH");
+
+employee table
+--------------
+create table employee (empid int NOT NULL,name varchar(235),
+deptid int NOT NULL,salary int, PRIMARY KEY(empid),
+ FOREIGN KEY(deptid) REFERENCES dept(deptid));
+
+insert into employee values(1,"selva",1,12000);
+insert into employee values(2,"hari",2,15000);
+insert into employee values(3,"rajesh",3,18000);
+insert into employee values(4,"magesh",4,20000);
+
+select * from employee e left join dept d on
+ e.deptid = d.deptid;
+
+
+List Databases
+---------------
+
+sqoop list-databases --connect jdbc:mysql://localhost/ --username root --password root --driver com.mysql.jdbc.Driver
+
+sqoop list-databases \
+--connect jdbc:mysql://localhost/ \
+--username root \
+--password root
+
+ToList Tables
+-------------
+
+sqoop list-tables --connect jdbc:mysql://localhost/userdb --driver com.mysql.jdbc.Driver --username root  --password  root
+
+
+sqoop list-tables \
+--connect jdbc:mysql://localhost/userdb \
+--driver com.mysql.jdbc.Driver \
+--username root  \
+--password  root
+
+Sqoop import 
+-------------
+
+sqoop import --connect jdbc:mysql://localhost/userdb --driver com.mysql.jdbc.Driver --username root --password  root --table person --split-by id --m 1 --target-dir /person7
+
+sqoop import \
+--connect jdbc:mysql://localhost/userdb \
+--driver com.mysql.jdbc.Driver \
+--username root \
+--password  root \
+--table person \
+--target-dir /person6
+
+
+
+
+Sqoop Import where Condition
+-----------------------------
+
+sqoop import \
+--connect jdbc:mysql://localhost/userdb \
+--username root \
+--password  root \
+--table person \
+--where "age > 25" \
+--driver com.mysql.jdbc.Driver \
+--m 1 \
+--target-dir /person4
+
+--split-by id \
+
+Sqoop import split by
+---------------------
+
+
+sqoop import --connect jdbc:mysql://localhost/userdb --driver com.mysql.jdbc.Driver --username root --password  root --table person --split-by id --m 4 --boundary-query "select min(id), max(id) from person" --target-dir /person12
+
+
+sqoop import \
+--connect jdbc:mysql://localhost/userdb \
+--driver com.mysql.jdbc.Driver \
+--username root \
+--password  root \
+--table person \
+--split-by id \
+--m 4 \
+--delete-target-dir \
+--target-dir /person2 
+
+
+
+
+Sqoop Import query imports
+--------------------------
+--query 'SELECT a.*, b.* FROM a JOIN b on (a.id == b.id) WHERE $CONDITIONS'
+
+
+
+sqoop import \
+--connect jdbc:mysql://localhost/userdb \
+--driver com.mysql.jdbc.Driver \
+--username root \
+--password  root \
+--query 'select e.* from employee e left join dept d on e.deptid = d.deptid WHERE $CONDITIONS' \
+--split-by e.deptid \
+--m 4 \
+--delete-target-dir \
+--target-dir /person9 \
+
+
+
+
+
+
+Sqoop Import Null Handling
+------------------------
+sqoop import \
+--connect jdbc:mysql://localhost/userdb \
+--driver com.mysql.jdbc.Driver \
+--username root \
+--password  root \
+--table person \
+--split-by id \
+--m 1 \
+--null-string '' \
+ --null-non-string '' \
+--delete-target-dir \
+--target-dir /person11
+
+
+Sqoop import Boundary query
+---------------------------
+
+sqoop import \
+--connect jdbc:mysql://localhost/userdb \
+--driver com.mysql.jdbc.Driver \
+--username root \
+--password  root \
+--table person \
+--split-by id \
+--m 4 \
+--boundary-query "select min(id), max(id) from person" \
+--delete-target-dir \
+--target-dir /person2 
+
+
+
+Sqoop Compress with avro
+-------------------------
+sqoop import \
+--connect jdbc:mysql://localhost/userdb \
+--driver com.mysql.jdbc.Driver \
+--username root \
+--password  root \
+--table person \
+--split-by id \
+--m 4 \
+--boundary-query "select min(id), max(id) from person" \
+--delete-target-dir \
+--target-dir /person2 \
+--compress --compression-codec snappy \
+--as-avrodatafile
+
+
+--as-parquetfile
+
+Sqoop Import all tables
+----------------------
+sqoop import-all-tables \
+--connect jdbc:mysql://localhost/userdb \
+--driver com.mysql.jdbc.Driver \
+--username root \
+--password  root 
+
+Sqoop import with columns
+-------------------------
+sqoop import \
+--connect jdbc:mysql://localhost/userdb \
+--driver com.mysql.jdbc.Driver \
+--username root \
+--password  root \
+--columns id,Name \
+--table person \
+--split-by id \
+--m 4 \
+--delete-target-dir \
+--target-dir /person2
+
+Sqoop Increment Import
+-----------------------
+
+insert into person values(10,"Mahipal",12222);
+
+sqoop import \
+--connect jdbc:mysql://localhost/userdb \
+--driver com.mysql.jdbc.Driver \
+--username root \
+--password  root \
+--table person \
+--split-by id \
+--m 4 \
+--boundary-query "select min(id), max(id) from person" \
+--incremental append \
+--check-column id \
+--last-value 9 \
+--target-dir /person2 
+
+
+
+
+
+
+
+
+
+create database sqoop;
+create table customer(id varchar(3), name varchar(20), age varchar(3), salary integer(10));
+
+
+sqoop import --connect jdbc:mysql://localhost/userdb --driver com.mysql.jdbc.Driver --username root --password root --table person --target-dir /table/hive/person1 --split-by id --hive-import --create-hive-table --hive-table newdb.customers
+
+Sqoop Import hive
+-----------------
+
+sqoop import \
+--connect jdbc:mysql://localhost/userdb \
+--driver com.mysql.jdbc.Driver \
+--username root \
+--password root \
+--table person \
+--delete-target-dir \
+--hive-import
+
+
+Sqoop hive import create table
+------------------------------
+sqoop import \
+--connect jdbc:mysql://localhost/userdb \
+--driver com.mysql.jdbc.Driver \
+--username root \
+--password root \
+--table dept \
+--split-by deptid \
+--hive-import \
+--create-hive-table \
+--hive-table newdb.dept
+
+
+
+
+
+
+
+
+
+
+
+
