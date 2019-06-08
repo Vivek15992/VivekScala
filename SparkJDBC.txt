@@ -1,0 +1,6 @@
+val dataframe_mysql = sqlContext.read.format
+("jdbc").option("url", "jdbc:mysql://localhost/sparksql")
+.option("driver", "com.mysql.jdbc.Driver")
+.option("dbtable", "baby_names")
+.option("user", "root")
+.option("password", "root").load()
