@@ -1,0 +1,70 @@
+CREATE TABLE dataraja_xml(seller_name STRING,
+seller_rating BIGINT, bidder_name STRING,
+location STRING, bid_history map<string,string>,
+item_info map<string,string>)
+ROW FORMAT SERDE 'com.ibm.spss.hive.serde2.xml.XmlSerDe'
+WITH SERDEPROPERTIES (
+"column.xpath.seller_name"="/listing/seller_info/seller_name/text()",
+"column.xpath.seller_rating"="/listing/seller_info/seller_rating/text()",
+"column.xpath.bidder_name"="/listing/auction_info/high_bidder/bidder_name/text()",
+"column.xpath.location"="/listing/auction_info/location/text()",
+"column.xpath.bid_history"="/listing/bid_history/*",
+"column.xpath.item_info"="/listing/item_info/*"
+)
+STORED AS
+INPUTFORMAT 'com.ibm.spss.hive.serde2.xml.XmlInputFormat'
+OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.IgnoreKeyTextOutputFormat'
+TBLPROPERTIES (
+"xmlinput.start"="<listing>",
+"xmlinput.end"="</listing>"
+);
+
+
+LOAD DATA LOCAL INPATH '/home/hduser/Downloads/ebay.xml' OVERWRITE INTO TABLE dataraja_xml;
+
+set hive.cli.print.current.db=true;
+set hive.cli.print.header=true;
+
+Array_Table
+
+CREATE TABLE raja_array_table
+(sal int,
+age array<smallint>
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+collection items terminated by '|' LINES TERMINATED BY '\n'
+stored AS textfile;
+
+LOAD DATA LOCAL INPATH '/home/hduser/Desktop/HiveData/arraydata.txt' OVERWRITE INTO TABLE raja_array_table;
+
+
+Hive map data type example
+--------------------------
+
+CREATE TABLE raja_map_table
+(sal int,
+age array<smallint>,
+feel map<string,boolean>
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+collection items terminated by '|'
+map KEYS terminated BY ':'
+LINES TERMINATED BY '\n'stored AS textfile;
+
+LOAD DATA LOCAL INPATH '/home/hduser/Desktop/HiveData/mapdata.txt' OVERWRITE INTO TABLE raja_map_table;
+
+
+Hive struct data type example
+------------------------------
+
+CREATE TABLE raja_struct_table
+(sal int,
+address struct<city:String,zip:int,ownhouse:boolean>
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+collection items terminated BY ':'
+LINES TERMINATED BY '\n' stored AS textfile;
+
+
+LOAD DATA LOCAL INPATH '/home/hduser/Desktop/HiveData/structexample.txt' OVERWRITE INTO TABLE raja_struct_table;
+
