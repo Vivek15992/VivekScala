@@ -1,0 +1,38 @@
+Migration of  Payment Systems :
+
+Description:
+●	Migrating 80 Systems to new framework and building a data lake. This will serve as source data for all the upstream systems.
+Responsibilities:
+●	Analyze Internal Product and Client specific requirements and create the project functional specifications.
+●	Based on the functional specifications, will develop solutions using below technologies.
+●	Unit test developed code. Develop procedures for independently testing code developed using Fun Suite.
+●	Responsible for developing Big data based application logic to support business processmodel.
+●	Coordinating within team and other teams working on the same project.
+
+Technologies Used:
+●	Scala, Apache Spark, HDFS, ApacheSqoop, Hive
+
+
+
+Pricing Analysis:
+
+
+Description:
+●	Pricing analysts is to ensure that Emirates 
+has the right prices available in the market and that 
+our price levels follow our pricing strategy for
+ each market/region. They work on setting up and 
+ managing the strategic fare levels, tactical fare 
+ levels, run promotions, manage special fares and 
+ corporate discounts etc. 
+ 
+Responsibilities:
+●	Analyze Internal Product and Client specific requirements and create the project functional specifications.
+●	Based on the functional specifications, will develop solutions using below technologies.
+●	Unit test developed code. Develop procedures for independently testing code developed using Fun Suite.
+●	Responsible for developing Big data based application logic to support business processmodel.
+●	Coordinating within team and other teams working on the same project.
+
+Technologies Used:
+●	Scala, Apache Spark, HDFS, Hive and  Cloudera
+
