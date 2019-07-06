@@ -1,0 +1,210 @@
+Apache HBase
+-------------
+
+HBase is a Hadoop project which is Open Source, distributed Hadoop database
+
+Now, it is an integral part of the Apache Software Foundation and the Hadoop ecosystem.
+
+Also, it is a high availability database which exclusively runs on top of the HDFS.
+
+It is a column-oriented database built on top of HDFS
+
+HBase - History
+------------------------
+
+Initially, in Nov 2006, Google released the paper on BigTable.
+
+The first HBase prototype was created as a Hadoop contribution in the year Feb 2007.
+    
+The first usable HBase was released in the same year Oct 2007 along with Hadoop 0.15.0.
+    
+HBase became the subproject of Hadoop, in Jan 2008.
+    
+In the year 2010, May HBase became Apache top-level project.
+
+Apache HBase Architecture
+-------------------------
+
+HBase Architecture is basically a column-oriented key-value data store and also it is the natural fit for deploying as a top layer on HDFS because it works extremely fine with the kind of data that Hadoop process.
+
+Moreover, when it comes to both read and write operations it is extremely fast and even it does not lose this extremely important quality with humongous datasets.
+
+There are 3 major components of HBase Architecture:
+
+    Zookeeper
+    HMaster server
+    Region servers
+
+Advantage of HBase:
+-------------------
+
+    Can store large data sets on top of HDFS file storage and will aggregate and analyze billions of rows present in the HBase tables
+
+    Operations such as data reading and processing will take small amount of time as compared to traditional relational models
+    Random read and write operations
+    For online analytical operations, HBase is used extensively.
+    For example: In banking applications such as real-time data updates in ATM machines, HBase can be used.
+
+
+ Limitations with HBase:
+------------------------
+
+    We cannot expect completely to use HBase as a replacement for traditional models. Some of the traditional models features cannot support by HBase
+    HBase cannot perform functions like SQL. It doesn't support SQL structure, so it does not contain any query optimizer
+    HBase is CPU and Memory intensive with large sequential input or output
+
+
+
+
+Step 1 : Extract the file
+cd /home/hduser/Downloads/
+
+tar -xvf hbase-1.4.9-bin.tar.gz
+
+Step 2: Move the file to user folder
+
+mv /home/hduser/Downloads/hbase-1.4.9 /usr/local/
+
+Step 3: Set hbase path
+
+please add folowing in bashrc file 
+
+gedit ~/.bashrc
+
+export HBASE_HOME=/usr/local/hbase-1.4.9
+
+$HBASE_HOME/bin
+
+Step 4.
+
+source~/.bashrc
+
+
+Step 4: Edit the conf for hbase standalone mode
+goto 
+
+cd $HBASE_HOME/conf
+
+gedit hbase-site.xml
+
+1.add below things to the file
+
+<property>
+<name>hbase.rootdir</name>
+
+<value>file:///home/hduser/HBASE/hbase</value>
+
+</property>
+
+<property>
+
+<name>hbase.zookeeper.property.dataDir</name>
+
+<value>/home/hduser/HBASE/zookeeper</value>
+
+</property>
+
+
+2.gedit hbase-env.sh
+
+add below things in file
+
+export JAVA_HOME=$JAVA_HOME
+
+3.Start hbase
+
+Step 5: start hbase server
+
+start-hbase.sh
+
+Pratice below commands:
+
+
+1.hbase shell
+
+2.list (List the tables)
+
+3.This command returns the status of the system including the details of the servers running on the system. Its syntax is as follows:
+
+status
+
+4.whoami
+
+This command returns the user details of HBase.
+
+5. Create table
+
+create 'emp', 'personal data', 'professional data'
+
+6.Status
+
+This command will give details about the system status like a number of servers present in the 
+cluster, active server count, and average load value
+
+7. version
+
+8.table_help
+
+It shows syntax how to create table
+
+9.list
+
+list the tables
+
+10.decribe 'emp'
+
+It will give more information about column families present in the mentioned table
+
+11. disable 'emp'
+
+        This command will start disabling the named table
+        If table needs to be deleted or dropped, it has to disable first 
+
+12. disable_all 'co.*'
+
+        This command will disable all the tables matching the given regex.
+        The implementation is same as delete command (Except adding regex for matching)
+        Once the table gets disable the user can able to delete the table from HBase
+        Before delete or dropping table, it should be disabled first 
+
+13. enable 'emp'
+
+This command will start enabling the named table
+Whichever table is disabled, to retrieve back to its previous state we use this command
+If a table is disabled in the first instance and not deleted or dropped, and if we want to re-use the disabled table then we have to enable it by using this command.
+
+14. drop 'college'  or  drop 'co.*'
+
+To delete the table present in HBase, first we have to disable it
+To drop the table present in HBase, first we have to disable it
+So either table to drop or delete first the table should be disable using disable command
+
+15. is_enabled 'emp'
+
+ verify whether the named table is enabled or not
+
+16.alter 'emp', NAME=>'employee'
+
+17. Insert Data
+
+create 'test', 'cf'
+put 'test', 'row1', 'cf:a', 'value1'
+put 'test', 'row2', 'cf:b', 'value2'
+put 'test', 'row3', 'cf:c', 'value3'
+
+18. See data
+
+scan 'test'
+
+19. get data
+
+get 'test', 'row1'
+
+20. exit 
+
+
+
+
+
+
+ 

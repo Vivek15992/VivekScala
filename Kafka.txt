@@ -1,0 +1,32 @@
+InstallationDir
+------------------
+cd E:\kafka_2.11-2.3.0\kafka_2.11-2.3.0
+
+ZookeeperService Start
+----------------------
+.\bin\windows\zookeeper-server-start.bat .\config\zookeeper.properties
+
+Kafka-Server Start
+--------------------
+.\bin\windows\kafka-server-start.bat .\config\server.properties
+
+Kafka-Create-Topics
+--------------------
+.\bin\windows\kafka-topics.bat --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic test
+
+List Kafka Topics
+-------------------
+.\bin\windows\kafka-topics.bat --list --bootstrap-server localhost:9092
+
+Start-Producer
+----------------
+.\bin\windows\kafka-console-producer.bat --broker-list localhost:9092 --topic test1
+
+Consumer
+---------
+.\bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic test --from-beginning
+
+
+Kafka-TwitterCreate-Topics
+--------------------
+.\bin\windows\kafka-topics.bat --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic bigdata-tweets
