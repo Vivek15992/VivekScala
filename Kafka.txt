@@ -12,7 +12,7 @@ Kafka-Server Start
 
 Kafka-Create-Topics
 --------------------
-.\bin\windows\kafka-topics.bat --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic test
+.\bin\windows\kafka-topics.bat --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic test4
 
 List Kafka Topics
 -------------------
@@ -20,11 +20,11 @@ List Kafka Topics
 
 Start-Producer
 ----------------
-.\bin\windows\kafka-console-producer.bat --broker-list localhost:9092 --topic test1
+.\bin\windows\kafka-console-producer.bat --broker-list localhost:9092 --topic test4
 
 Consumer
 ---------
-.\bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic test --from-beginning
+.\bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic test4 --from-beginning
 
 
 Kafka-TwitterCreate-Topics
