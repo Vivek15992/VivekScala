@@ -257,3 +257,8 @@ The computation speed of the system increases.
 Improves complex event processing.
 Cached a large amount of data.
 It is economic, as the cost of RAM has fallen over a period of time.
+
+
+
+
+Hello
