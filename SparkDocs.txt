@@ -10,7 +10,7 @@ Directed Acyclic Graph (DAG)
 
 Resilient Distributed Datasets (RDD)
 -----------------------------------
-RDD stands for “Resilient Distributed Dataset”. It is the fundamental data structure of 
+RDD stands for “Resilient Distributed Datasets”. It is the fundamental data structure of 
 Apache Spark. RDD in Apache Spark is an immutable collection of objects which 
 computes on the different node of the cluster.
 
@@ -257,8 +257,3 @@ The computation speed of the system increases.
 Improves complex event processing.
 Cached a large amount of data.
 It is economic, as the cost of RAM has fallen over a period of time.
-
-
-
-
-Hello

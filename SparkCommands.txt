@@ -1,0 +1,1 @@
+spark-submit --num-executors 2 --executor-memory 2gb --master local[*] --class com.spark.learn.Repartition C:\Users\hp\workspace\com.spark.test\target\com.spark.test-0.0.1-SNAPSHOT.jar
