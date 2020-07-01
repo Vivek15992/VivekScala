@@ -8,6 +8,8 @@ object FlatMapEx {
     println(map_res)
     val flat_res = fruits.flatMap(_ .toUpperCase())
     println(flat_res)
+    print("test")
     
   }
+
 }
